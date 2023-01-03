@@ -1,0 +1,174 @@
+---
+sidebar_position: 1
+---
+
+# Canvas 压缩图片
+
+## 技术点
+
+利用 `canvas` 绘制图片这个技术点可以快速进行图片压缩，以下会涉及到 `createImageBitmap` 、`createObjectURL`、`DataTransfer` 等知识点，这是一个新颖的技术解决方案可供参考。
+
+## 核心代码
+
+```js
+const compressImage = async (file, quality = 1, type = file.type) => {
+  // 获取位图数据
+  const imageBitmap = await createImageBitmap(file);
+
+  // 绘制 canvas
+  const canvas = document.createElement('canvas');
+  // 获取 canvas 上下文
+  const ctx = canvas.getContext('2d');
+  // 设置 canvas 尺寸大小
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  // 在 canvas 上绘制图片
+  ctx.drawImage(imageBitmap, 0, 0);
+
+  // 创建 Blob 对象
+  const blob = await new Promise((resolve) => {
+    canvas.toBlob(resolve, type, quality);
+  });
+
+  // 将 blob 数据构造成 File 对象
+  return new File([blob], file.name, {
+    type: blob.type,
+  });
+};
+```
+
+## 效果预览
+
+<!-- <iframe
+  src="https://stackblitz.com/edit/web-platform-e47mv7?file=index.html"
+  width="100%"
+  height="400px"
+/> -->
+
+<SandpackEditor template="vanilla">
+
+```js src/index.js active
+const compressImage = async (file, quality = 1, type = file.type) => {
+  // 获取位图数据
+  const imageBitmap = await createImageBitmap(file);
+
+  // 绘制 canvas
+  const canvas = document.createElement('canvas');
+  // 获取 canvas 上下文
+  const ctx = canvas.getContext('2d');
+  // 设置 canvas 尺寸大小
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  // 在 canvas 上绘制图片
+  ctx.drawImage(imageBitmap, 0, 0);
+
+  // 创建 Blob 对象
+  const blob = await new Promise((resolve) => {
+    canvas.toBlob(resolve, type, quality);
+  });
+
+  // 将 blob 数据构造成 File 对象
+  return new File([blob], file.name, {
+    type: blob.type,
+  });
+};
+
+// 计算文件尺寸大小
+const getFileTotalSize = (file) => {
+  return (file.size / 1024).toFixed(2);
+};
+
+// 通过 File 对象创建图片
+const createPreviewImage = (file) => {
+  const img = document.createElement('img');
+  // 创建指定 File 内容的图片地址
+  img.src = URL.createObjectURL(file);
+  img.width = 300;
+  img.onload = () => {
+    // 释放 URL 对象
+    URL.revokeObjectURL(img.src);
+  };
+  return img;
+};
+
+const input = document.querySelector('input');
+const before = document.querySelector('#before');
+const beforeImage = document.querySelector('#before-image');
+const after = document.querySelector('#after');
+const afterImage = document.querySelector('#after-image');
+
+input.addEventListener(
+  'change',
+  async (evt) => {
+    // 获取上传的文件列表
+    const { files } = evt.target;
+
+    // 上传的文件为空
+    if (!files.length) return;
+
+    // 用于存放文件数据
+    const dataTransfer = new DataTransfer();
+
+    for (const file of files) {
+      // if (!file.type.startsWith('image')) {
+      //   dataTransfer.items.add(file);
+      //   continue;
+      // }
+
+      // 压缩一半大小（50%）
+      const compressedImage = await compressImage(file, 0.5, 'image/jpeg');
+
+      const beforeImage = createPreviewImage(file);
+      const afterImage = createPreviewImage(compressedImage);
+      before.innerText = `${getFileTotalSize(file)}KB`;
+      before.appendChild(beforeImage);
+      after.innerText = `${getFileTotalSize(compressedImage)}KB`;
+      after.appendChild(afterImage);
+
+      // 存储压缩后的文件
+      dataTransfer.items.add(compressedImage);
+    }
+
+    // 更新选择后的结果文件
+    evt.target.files = dataTransfer.files;
+  },
+  false
+);
+
+
+```
+
+```html index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!--
+      Need a visual blank slate?
+      Remove all code in `styles.css`!
+    -->
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Canvas 压缩图片</h1>
+      <input type="file" multiple accept="image/*" />
+      <div>
+        <h3>Before:</h3>
+        <div id="before"></div>
+      </div>
+      <div>
+        <h3>After:</h3>
+        <div id="after"></div>
+      </div>
+    </main>
+  </body>
+</html>
+```
+
+</SandpackEditor>
