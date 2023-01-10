@@ -67,7 +67,7 @@ const config = {
             type: 'doc',
             docId: 'js/canvas_compress_image',
             position: 'left',
-            label: '创意积累',
+            label: 'ideas',
           },
           { href: 'https://jweboy.com/blog/', label: 'Blog', position: 'right'},
           {
@@ -84,8 +84,8 @@ const config = {
             title: '文档',
             items: [
               {
-                label: '汇总',
-                to: '/docs/canvas_compress_image',
+                label: 'ideas',
+                to: '/docs/js/canvas_compress_image',
               },
             ],
           },
