@@ -1,0 +1,61 @@
+# 背景与边框
+
+## 半透明边框
+
+<SandpackEditor template="react">
+
+```css styles.css active
+body {
+  padding: 2em;
+  background: url('https://template-static.oss-cn-hangzhou.aliyuncs.com/idea/stone-art.jpeg');
+}
+
+.box {
+  border: 20px solid rgba(255, 255, 255, .5);
+  background: white;
+  background-clip: padding-box;
+}
+```
+
+```js App.js
+export default function App() {
+  return (
+    <div class="box">半透明边框</div>
+  );
+}
+
+```
+
+</SandpackEditor>
+
+## 多重边框
+
+<SandpackEditor template="react">
+
+```css styles.css active
+body {
+  background-color: blue;
+  padding: 2em;
+}
+
+.box {
+  background: #fff;
+  border: 10px solid hsla(0, 0%, 100%, .5);
+  background: yellowgreen;
+  box-shadow: 
+    0 0 0 10px #655,
+    0 0 0 15px deeppink,
+    0 2px 5px 15px rgba(0,0,0,.6);
+  }
+```
+
+```js App.js
+export default function App() {
+  return (
+    <div class="box">多重边框</div>
+  );
+}
+
+```
+
+</SandpackEditor>
