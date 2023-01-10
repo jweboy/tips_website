@@ -65,9 +65,9 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'canvas_compress_image',
+            docId: 'js/canvas_compress_image',
             position: 'left',
-            label: '汇总',
+            label: '创意积累',
           },
           { href: 'https://jweboy.com/blog/', label: 'Blog', position: 'right'},
           {
