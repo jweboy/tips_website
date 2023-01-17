@@ -1,0 +1,86 @@
+---
+title:  椭圆
+---
+
+## 自适应椭圆
+
+### 关键点
+
+将 `border-radius` 设置为 `50%`，即等同于 `50% / 50%`（`1/2宽 / 1/2高`），根据不同的水平、垂直半径自动计算。
+
+```css
+.oval {
+  background: #fb3;
+  width: 200px;
+  height: 150px;
+  border-radius: 50%; 
+}
+```
+
+## 半椭圆
+
+### 关键点
+
+`border-radius` 是一个合成属性，它可以展开为以下四个属性：
+- border-top-left-radius
+- border-top-right-radius
+- border-bottom-right-radius
+- border-bottom-left-radius
+
+这四个属性值就分别**从左上角开始以顺时针顺序**应用到元素的各个拐角，同时可以为**所有四个角提供完全不同的水平和垂直半径**，方法是在斜杠前指定 1~4 个值，在斜杠后指定另外 1~4 个值，可参考下图。
+
+<img src="https://template-static.oss-cn-hangzhou.aliyuncs.com/idea/border_radius_property.png" />
+
+
+```css
+.oval {
+  background: #fb3;
+  width: 200px;
+  height: 150px;
+  border-radius: 50% / 100% 100% 0 0; 
+}
+```
+
+## demo
+
+<SandpackEditor template="react">
+
+```css styles.css active
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.oval {
+  background: #fb3;
+  width: 200px;
+  height: 150px;
+  border-radius: 50%; 
+}
+
+.half-oval {
+  border-radius: 50% / 100% 100% 0 0; 
+}
+
+.half-oval1 {
+  border-radius: 100% 0 0 100% / 50%; 
+}
+
+```
+
+```js App.js
+export default function App() {
+  return (
+    <div class="wrapper">
+      <h3>自适应椭圆</h3>
+      <div class="oval" />
+      <h3>半椭圆</h3>
+      <div class="oval half-oval" />
+      <div class="oval half-oval1" />
+    </div>
+  );
+}
+
+```
+</SandpackEditor>
