@@ -1,0 +1,46 @@
+---
+title:  菱形
+---
+
+## 菱形
+
+### 关键点
+
+## demo
+
+<SandpackEditor template="react">
+
+```css styles.css active
+.diamond {
+  width: 200px;
+  transform: rotate(45deg);
+  overflow: hidden;
+}
+
+.diamond>img {
+  max-width: 100%;
+  transform: rotate(-45deg) scale(1.5);
+}
+
+.clip {
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+```
+
+```js App.js
+export default function App() {
+  return (
+    <div class="wrapper">
+      <h3>菱形图片</h3>
+      <div class="diamond">
+        <img src="https://pettalk.s3.amazonaws.com/p/user/66/33406/pet/8737/300x300/1604762205_765586636_image.jpg" />
+      </div>
+      <h3>裁剪方案</h3>
+      <img class="clip" src="https://pettalk.s3.amazonaws.com/p/user/66/33406/pet/8737/300x300/1604762205_765586636_image.jpg" />
+    </div>
+  );
+}
+
+```
+</SandpackEditor>
