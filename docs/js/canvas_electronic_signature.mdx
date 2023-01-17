@@ -1,0 +1,115 @@
+---
+title: canvas 生成电子签名
+---
+
+<SandpackEditor template="vanilla">
+
+```js src/index.js active
+// canvas 基础配置
+const config = {
+  width: 350,
+  height: 200,
+  lineWidth: 5, // 线条宽度
+  strokeStyle: 'red', // 线条颜色
+  lineCap: 'round', // 线条末端以圆形结束
+}
+
+// 获取 canvas 
+const canvas = document.querySelector('canvas');
+console.log(canvas);
+
+// 设置尺寸
+canvas.width = config.width;
+canvas.height = config.height;
+
+// 设置边框线
+canvas.style.border = '1px solid #ccc';
+
+// 创建上下文
+const ctx = canvas.getContext("2d");
+
+// 填充背景色
+ctx.fillStyle = '#cfcfcf';
+
+// 绘制填充矩形
+ctx.fillRect(0, 0, config.width, config.height);
+
+// 保存配置
+const client = {
+  offsetX: 0, // 偏移量
+  offsetY: 0, 
+  endX: 0, // 坐标
+  endY: 0, 
+}
+
+const start = (evt) => {
+  // 获取当前偏移量及坐标
+  const { offsetX, offsetY, pageX, pageY } = evt;
+  console.log(offsetX, offsetY, pageX, pageY);
+
+  // 更新坐标信息
+  client.offsetX = offsetX;
+  client.offsetY = offsetY;
+  client.endX = pageX;
+  client.endY = pageY;
+
+  // 每次绘制之前清除上一次的路径
+  ctx.beginPath();
+  ctx.lineWidth = config.lineWidth;
+  ctx.strokeStyle = config.strokeStyle;
+
+  // 设置线条起点
+  ctx.moveTo(client.endX, client.endY);
+
+  // 监听移动事件
+  window.addEventListener('mousemove', draw);
+}
+
+const draw = evt => {
+  // 获取当前坐标
+  const { pageX, pageY } = evt;
+
+  // 更新最后一次绘制的坐标
+  client.endX= pageX; 
+  client.endY= pageY;
+
+  // 根据坐标添加线条
+  ctx.lineTo(pageX, pageY);
+
+  // 绘制线条
+  ctx.stroke();
+}
+
+const closeDraw = evt => {
+  // 结束绘制
+  ctx.closePath();
+
+  // 移除鼠标移动监听器
+  window.removeEventListener('mousemove', draw);
+}
+
+// 监听鼠标按下、鼠标弹起
+window.addEventListener('mousedown', start, false);
+window.addEventListener('mouseup', closeDraw, false);
+```
+
+```html index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>canvas 电子签名</h1>
+      <canvas />
+    </main>
+  </body>
+</html>
+```
+
+</SandpackEditor>
