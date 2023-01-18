@@ -63,8 +63,12 @@ title:  椭圆
   border-radius: 50% / 100% 100% 0 0; 
 }
 
-.half-oval1 {
+.half-oval {
   border-radius: 100% 0 0 100% / 50%; 
+}
+
+.quarter-oval {
+  border-radius: 100% 0 0 0;
 }
 
 ```
@@ -77,7 +81,8 @@ export default function App() {
       <div class="oval" />
       <h3>半椭圆</h3>
       <div class="oval half-oval" />
-      <div class="oval half-oval1" />
+      <div class="oval half-oval" />
+      <div class="oval quarter-oval" />
     </div>
   );
 }

@@ -1,0 +1,71 @@
+---
+title:  平行四边形
+---
+
+## 平行四边形
+
+### 关键点
+
+## demo
+
+<SandpackEditor template="react">
+
+```css styles.css active
+.shape {
+  background: #fb3;
+  width: 200px;
+  height: 80px;
+  transform: skewX(-45deg);
+}
+
+.shape1 {
+  background: #fb3;
+  width: 200px;
+  height: 80px;
+  transform: skewX(-45deg);
+}
+
+.shape1>div {
+  transform: skewX(45deg);
+}
+
+.shape2 {
+  position: relative;
+  color: #fff;
+  text-align: center;
+}
+
+.shape2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #58a;
+  transform: skew(45deg);
+  z-index: -1;
+}
+
+```
+
+```js App.js
+export default function App() {
+  return (
+    <div class="wrapper">
+      <h3>平行四边形（文字偏移）</h3>
+      <div class="shape">Click me</div>
+      <h3>平行四边形（文字不偏移）</h3>
+      <div class="shape1">
+        <div>Click me</div>
+      </div>
+      <h3>伪类元素方案（文字不偏移）</h3>
+      <div class="shape2">
+        <div>Click me</div>
+      </div>
+    </div>
+  );
+}
+
+```
+</SandpackEditor>
